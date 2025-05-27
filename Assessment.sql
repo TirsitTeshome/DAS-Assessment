@@ -1,23 +1,23 @@
-CREATE SCHEMA business_area;
-CREATE TABLE business_area.employees_table (
-    EmployeeID INT PRIMARY KEY,
-    FirstName VARCHAR(50),
-    LastName VARCHAR(50),
-    Gender VARCHAR(10),
-    Department VARCHAR(50),
-    HireDate DATE,
-    Salary FLOAT
-);
+--CREATE SCHEMA business_area;
+--CREATE TABLE business_area.employees_table (
+--    EmployeeID INT PRIMARY KEY,
+--    FirstName VARCHAR(50),
+--    LastName VARCHAR(50),
+--    Gender VARCHAR(10),
+--    Department VARCHAR(50),
+--    HireDate DATE,
+--    Salary FLOAT
+--);
 
-
-INSERT INTO business_area.employees_table (EmployeeID, FirstName, LastName, Gender, Department, HireDate, Salary) VALUES
-(1, 'John', 'Doe', 'Male', 'IT', '2018-05-01', 60000.00),
-(2, 'Jane', 'Smith', 'Female', 'HR', '2019-06-15', 50000.00),
-(3, 'Michael', 'Johnson', 'Male', 'Finance', '2017-03-10', 75000.00),
-(4, 'Emily', 'Davis', 'Female', 'IT', '2020-11-20', 70000.00),
-(5, 'Sarah', 'Brown', 'Female', 'marketing', '2016-07-30', 45000.00),
-(6, 'David', 'Wilson', 'Male', 'Sales', '2019-01-05', 55000.00),
-(7, 'Chris', 'Taylor', 'Male', 'IT', '2022-02-25', 65000.00);
+--
+--INSERT INTO business_area.employees_table (EmployeeID, FirstName, LastName, Gender, Department, HireDate, Salary) VALUES
+--(1, 'John', 'Doe', 'Male', 'IT', '2018-05-01', 60000.00),
+--(2, 'Jane', 'Smith', 'Female', 'HR', '2019-06-15', 50000.00),
+--(3, 'Michael', 'Johnson', 'Male', 'Finance', '2017-03-10', 75000.00),
+--(4, 'Emily', 'Davis', 'Female', 'IT', '2020-11-20', 70000.00),
+--(5, 'Sarah', 'Brown', 'Female', 'marketing', '2016-07-30', 45000.00),
+--(6, 'David', 'Wilson', 'Male', 'Sales', '2019-01-05', 55000.00),
+--(7, 'Chris', 'Taylor', 'Male', 'IT', '2022-02-25', 65000.00);
 
 select * from business_area.employees_table
 
@@ -185,11 +185,12 @@ JOIN business_area.sales_table s ON e.EmployeeID = s.EmployeeID
 GROUP BY e.Department;
 
 -- 27
-SELECT e.EmployeeID, e.FirstName, e.LastName, SUM(s.Total) AS TotalSales2021
-FROM business_area.employees_table e
-JOIN business_area.sales_table s ON e.EmployeeID = s.EmployeeID
-WHERE YEAR(s.SaleDate) = 2021
-GROUP BY e.EmployeeID, e.FirstName, e.LastName;
+SELECT employees.EmployeeID, employees.FirstName, employees.LastName, SUM(sales.Total) AS total_sales_2021
+FROM business_area.employees_table employees
+JOIN business_area.sales_table sales
+ON employees.EmployeeID = sales.EmployeeID
+WHERE EXTRACT(YEAR FROM sales.SaleDate) = 2021
+GROUP BY employees.EmployeeID, employees.FirstName, employees.LastName;
 
 -- 28
 SELECT e.EmployeeID, e.FirstName, e.LastName, SUM(s.Quantity) AS TotalQuantity
